@@ -1,0 +1,6 @@
+name = "L5"
+defaultTargets = ["L5"]
+
+[[lean_lib]]
+name = "L5"
+roots = ["L5Comb", "L5Count", "L5Link", "L5Pigeon", "L5Main"]
