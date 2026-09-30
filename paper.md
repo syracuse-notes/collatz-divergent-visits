@@ -1,6 +1,8 @@
 # Divergent Collatz trajectories visit dyadic intervals sparsely
 
-*Draft v2, 2026-09-28. Revised after two adversarial reviews. Not peer-reviewed.*
+*Draft v3, 2026-09-30. Not peer-reviewed.*
+
+> **Not a new result.** Theorem 1 follows, up to the explicit constants, from Garcia and Tal (1999), inequality (6). We thank harappa for the reference. See "Prior work" in §1. The novelty claim made in v1–v2 is withdrawn.
 
 *Formalization scope:* Lean 4 (no Mathlib) checks the finite-horizon integer counting theorem that underlies Theorem 1 (`L5M.L5_main`). It also checks the passage from every finite horizon to all times (`L5M.L5_all_time`). The choice of parameters and the logarithmic estimate in §5.2 are proved by hand. So are the corollaries in §1.
 
@@ -8,7 +10,7 @@
 
 Let T(n) = n/2 for even n and (3n+1)/2 for odd n. Suppose the T-orbit of N is not eventually periodic. We show that, for every e ≥ 3, the orbit enters [2^e, 2^{e+1}) at most 10·e·2^{0.9603e} times. The constant does not depend on N.
 
-It follows that the reciprocals of all terms of such an orbit have a finite sum. Consequently T^t(N)·2^t/3^{j_t} → K ∈ (0, ∞), where j_t is the number of odd steps among the first t steps. The closest earlier statement we found is Lagarias (1985, eq. (2.32)), which bounds only the orbit points that are never undercut later.
+It follows that the reciprocals of all terms of such an orbit have a finite sum. Consequently T^t(N)·2^t/3^{j_t} → K ∈ (0, ∞), where j_t is the number of odd steps among the first t steps. Theorem 1 is not new: up to the explicit constants, it follows from Garcia and Tal (1999). What this note adds is an explicit exponent and constant, a different proof, and a Lean formalization of the integer core.
 
 ## 1. Statement
 
@@ -34,9 +36,18 @@ For positive integers, "not eventually periodic" is equivalent to x_t → ∞. I
 
 In words: a divergent trajectory, if one exists, cannot diverge more slowly than its multiplier 3^{j_t}/2^t. Theorem 1 does not exclude divergent trajectories. It constrains their structure.
 
-**Comparison.** Lagarias (Amer. Math. Monthly 92 (1985), eq. (2.32), from Theorem F) shows the following. Let U_D be the set of points n of the orbit with T^k(n) > n for all k ≥ 1. Then #{n ∈ U_D : n ≤ x} ≤ c·x^{1−η}, with η ≈ 0.05004. Theorem 1 bounds all orbit points instead. The new ingredient is Lemma 3: every revisit to an interval consumes a distinct rare up-crossing.
+**Prior work.** Theorem 1 follows, up to the explicit constants, from Garcia and Tal [GT99] (M. V. P. Garcia, F. A. Tal, *A note on the generalized 3n+1 problem*, Acta Arith. 90.3 (1999), 245–250). Their result covers the Hasse functions with m < d^{d/(d−1)}, which include T. Inequality (6) in the proof of their Theorem 1 gives
 
-We searched Lagarias' annotated bibliographies I–II (arXiv math/0309224, math/0608208), Tao (2019), Krasikov–Lagarias (2003), and the web. We did not find Theorem 1 or Corollary 2. This is not a complete survey, so novelty is not claimed.
+    #(P ∩ [a, a+k)) ≤ 2(⌊log_d k⌋ + 1)(k^{1−δ₁} + g(k)),  g(k) = O(k^{δ₂}),
+
+uniformly in a. Here P is any set of points no two of which ever merge, and δ₁, δ₂ ∈ (0,1) come from Heppner [Hep78]. A non-periodic orbit is such a set (their Corollary 1). Taking a = k = 2^e gives Theorem 1 with a non-explicit exponent, and hence Corollary 2. Garcia and Tal state only the consequence that orbits have Banach density zero.
+
+Their result is strictly more general: it holds for arbitrary windows and arbitrary families of non-merging points. Our contribution is therefore limited to three things:
+1. an explicit exponent and constant, 10·e·2^{0.9603e} for e ≥ 3;
+2. a different, self-contained proof via rare up-crossings;
+3. a Lean formalization of the integer core.
+
+Lagarias (Amer. Math. Monthly 92 (1985), eq. (2.32)) earlier bounded the orbit points that are never undercut later. We missed [GT99] in our first literature search, although it is entry 69 of Lagarias' annotated bibliography I. We thank harappa for pointing it out.
 
 ## 2. A combinatorial lemma for arbitrary sequences
 
